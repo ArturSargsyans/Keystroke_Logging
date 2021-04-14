@@ -5,7 +5,6 @@ def reliable_send(data):
     jsondata = json.dumps(data)
     target.send(jsondata.encode())
 
-
 def reliable_recieve():
     data = ''
     while True:
@@ -14,7 +13,6 @@ def reliable_recieve():
             return json.loads(data)
         except ValueError:
             continue
-
 
 def target_communication():
     while True:
@@ -26,7 +24,7 @@ def target_communication():
         print(result)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.bind(("10.0.2.15", 5555))
+sock.bind(("127.0.0.1", 5555))
 print("Listening for incoming connections")
 sock.listen(5)
 target, ip = sock.accept()
